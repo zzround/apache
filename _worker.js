@@ -489,7 +489,7 @@ export default {
 							responseHeaders["content-type"] = 'application/json; charset=utf-8';
 						} else if (订阅类型 === 'clash') {
 							订阅内容 = Clash订阅配置文件热补丁(订阅内容, config_JSON);
-							# responseHeaders["content-type"] = 'application/x-yaml; charset=utf-8';
+							responseHeaders["content-type"] = 'text/plain; charset=utf-8';
 						}
 						return new Response(订阅内容, { status: 200, headers: responseHeaders });
 					}
