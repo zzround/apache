@@ -329,7 +329,21 @@ export default {
 							responseHeaders["Subscription-Userinfo"] = `upload=${pagesSum}; download=${workersSum}; total=${total}; expire=4102329600`; // 2099-12-31 到期时间
 						}
 						const isSubConverterRequest = url.searchParams.has('b64') || url.searchParams.has('base64') || request.headers.get('subconverter-request') || request.headers.get('subconverter-version') || ua.includes('subconverter') || ua.includes(('CF-Workers-SUB').toLowerCase()) || 作为优选订阅生成器;
-						const 订阅类型 = 'mixed';
+						const 订阅类型 = isSubConverterRequest
+							? 'mixed'
+							: url.searchParams.has('target')
+								? url.searchParams.get('target')
+								: url.searchParams.has('clash') || ua.includes('clash') || ua.includes('meta') || ua.includes('mihomo')
+									? 'clash'
+									: url.searchParams.has('sb') || url.searchParams.has('singbox') || ua.includes('singbox') || ua.includes('sing-box')
+										? 'singbox'
+										: url.searchParams.has('surge') || ua.includes('surge')
+											? 'surge&ver=4'
+											: url.searchParams.has('quanx') || ua.includes('quantumult')
+												? 'quanx'
+												: url.searchParams.has('loon') || ua.includes('loon')
+													? 'loon'
+													: 'mixed';
 
 						if (!ua.includes('mozilla')) responseHeaders["Content-Disposition"] = `attachment; filename*=utf-8''${encodeURIComponent(config_JSON.优选订阅生成.SUBNAME)}`;
 						const 协议类型 = ((url.searchParams.has('surge') || ua.includes('surge')) && config_JSON.协议类型 !== 'ss') ? 'tro' + 'jan' : config_JSON.协议类型;
@@ -475,7 +489,7 @@ export default {
 							responseHeaders["content-type"] = 'application/json; charset=utf-8';
 						} else if (订阅类型 === 'clash') {
 							订阅内容 = Clash订阅配置文件热补丁(订阅内容, config_JSON);
-							responseHeaders["content-type"] = 'application/x-yaml; charset=utf-8';
+							# responseHeaders["content-type"] = 'application/x-yaml; charset=utf-8';
 						}
 						return new Response(订阅内容, { status: 200, headers: responseHeaders });
 					}
